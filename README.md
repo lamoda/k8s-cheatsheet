@@ -16,6 +16,20 @@ The expression selecting name of each pod and `release` from `.metadata.labels`
 Get all pods with same release
 
 ```bash
-kubectl get po -l release=<my-release>
+$>kubectl get po -l release=<my-release>
 ```
 
+## Show all pods deployed on same node
+
+```bash
+$>kubectl get po --field-selector spec.nodeName=<node-name>
+```
+The expression selecting all pods deployed on node with name `<node_name>`
+
+For determinating all nodes in cluster you can run
+
+```bash
+$>kubectl get nodes
+```
+
+> Often you can get error `Error from server (Forbidden): nodes is forbidden:` because user in kubeconfig doesn't have permissions on some commands
