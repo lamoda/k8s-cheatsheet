@@ -1,4 +1,5 @@
-# k8s-speadsheet
+# k8s-cheatsheet
+
 Work with cluster and resources using kubectl
 
 Here i suggest different scenario with resources in cluster(cloud-managed, bare-metal and local such as minikube)
@@ -26,10 +27,15 @@ $>kubectl get po --field-selector spec.nodeName=<node-name>
 ```
 The expression selecting all pods deployed on node with name `<node_name>`
 
-For determinating all nodes in cluster you can run
+For determination all nodes in cluster you can run
 
 ```bash
 $>kubectl get nodes
 ```
 
 > Often you can get error `Error from server (Forbidden): nodes is forbidden:` because user in kubeconfig doesn't have permissions on some commands
+
+## Show all pods with Failed phase
+```bash
+kubectl get po --field-selector status.phase=Failed --all-namespaces
+```
