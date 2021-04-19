@@ -1,0 +1,27 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        k8s-version:
+          - "1.18.0"
+          - "1.19.0"
+          - "1.20.0"
+          - "1.21.0"
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build --build-arg KUBE_VERSION=${{ matrix.k8s-version }} --tag kubectl-client:$(date +%s) .
+    - name: Run image
+      run: docker run --rm kubectl-client:$(date +%s) sh -c "kubectl version"
