@@ -24,4 +24,4 @@ jobs:
     - name: Build the Docker image
       run: docker build --build-arg KUBE_VERSION="${{ matrix.k8s-version }}" --tag kubectl-client:$(date +%F) .
     - name: Run image
-      run: docker run --rm kubectl-client:$(date +%F) sh -c "kubectl version || exit 0"
+      run: docker run --rm kubectl-client:$(date +%F) sh -c "kubectl version --client"
