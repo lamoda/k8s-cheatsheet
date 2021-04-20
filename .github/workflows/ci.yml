@@ -40,6 +40,7 @@ jobs:
           GITHUB_SHA: ${{ github.sha}}
           GITHUB_REF: ${{ github.ref}}
           REPOSITORY: ${{ github.repository }}
+          KUBE_VERSION: ${{ matrix.k8s-version }}
       run: |
         ref="$(echo ${GITHUB_REF} | cut -d'/' -f3)"
         echo GITHUB_REF - $ref
@@ -50,8 +51,9 @@ jobs:
 
         docker buildx build --push \
             --build-arg GITHUB_SHA=${GITHUB_SHA} --build-arg GIT_BRANCH=${ref} \
+            --build-arg KUBE_VERSION=${KUBE_VERSION} \
             --platform linux/amd64,linux/arm/v7,linux/arm64 \
-            -t ghcr.io/$REPOSITORY/kubectl-client:${ref} -t ${USERNAME}/kubectl-client:${ref} .
+            -t ghcr.io/$REPOSITORY/kubectl-client:${ref}-${KUBE_VERSION} -t ${USERNAME}/kubectl-client:${ref} .
 
     - name: Run image
       env:
