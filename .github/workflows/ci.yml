@@ -31,7 +31,7 @@ jobs:
 
     - name: available platforms
       run: echo ${{ steps.buildx.outputs.platforms }}
-      
+
     - name: build and deploy master image to ghcr.io
       if: ${{ github.ref == 'refs/heads/master' }}
       env:
@@ -39,6 +39,7 @@ jobs:
           USERNAME: ${{ github.actor }}
           GITHUB_SHA: ${{ github.sha}}
           GITHUB_REF: ${{ github.ref}}
+          REPOSITORY: ${{ github.repository }}
       run: |
         ref="$(echo ${GITHUB_REF} | cut -d'/' -f3)"
         echo GITHUB_REF - $ref
@@ -50,7 +51,7 @@ jobs:
         docker buildx build --push \
             --build-arg GITHUB_SHA=${GITHUB_SHA} --build-arg GIT_BRANCH=${ref} \
             --platform linux/amd64,linux/arm/v7,linux/arm64 \
-            -t ghcr.io/$USERNAME/kubectl-client:${ref} -t ${USERNAME}/kubectl-client:${ref} .
+            -t ghcr.io/$REPOSITORY/kubectl-client:${ref} -t ${USERNAME}/kubectl-client:${ref} .
 
     - name: Run image
       env:
