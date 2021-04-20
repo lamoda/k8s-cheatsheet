@@ -1,5 +1,9 @@
 FROM alpine
+
 ARG KUBE_VERSION=1.21.0
+ARG GITHUB_SHA
+ARG GIT_BRANCH
+
 RUN apk --no-cache add curl bash-completion bash && \
     curl -LO https://storage.googleapis.com/kubernetes-release/release/v${KUBE_VERSION}/bin/linux/amd64/kubectl && \
     chmod +x ./kubectl && \
