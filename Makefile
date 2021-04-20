@@ -7,4 +7,4 @@ build-image:
 run-image:
 	echo $(KUBECONFIG)
 	docker run --rm -v "${KUBECONFIG}":/root/.kube/config:ro -it \
-	kubectl-client:latest sh
+	kubectl-client:latest bash
