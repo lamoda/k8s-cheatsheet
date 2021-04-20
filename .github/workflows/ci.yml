@@ -21,11 +21,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build --build-arg KUBE_VERSION="${{ matrix.k8s-version }}" --tag kubectl-client:$(date +%F) .
+
+    - name: set up QEMU
+      uses: docker/setup-qemu-action@v1
+
     - name: set up Docker Buildx
       id: buildx
       uses: docker/setup-buildx-action@v1
+
+    - name: available platforms
+      run: echo ${{ steps.buildx.outputs.platforms }}
+      
     - name: build and deploy master image to ghcr.io
       if: ${{ github.ref == 'refs/heads/master' }}
       env:
