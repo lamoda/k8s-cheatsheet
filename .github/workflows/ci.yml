@@ -34,10 +34,16 @@ jobs:
         ref="$(echo ${GITHUB_REF} | cut -d'/' -f3)"
         echo GITHUB_REF - $ref
         echo ${GITHUB_PACKAGE_TOKEN} | docker login ghcr.io -u ${USERNAME} --password-stdin
+
+        IMAGE_ID=ghcr.io/$USERNAME/kubectl-client
+
+        # Change all uppercase to lowercase
+        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
         docker buildx build --push \
             --build-arg GITHUB_SHA=${GITHUB_SHA} --build-arg GIT_BRANCH=${ref} \
             --platform linux/amd64,linux/arm/v7,linux/arm64 \
-            -t ghcr.io/${USERNAME}/kubectl-client:${ref} -t ${USERNAME}/kubectl-client:${ref} .
+            -t $USERNAME:${ref} -t ${USERNAME}/kubectl-client:${ref} .
 
     - name: Run image
       env:
